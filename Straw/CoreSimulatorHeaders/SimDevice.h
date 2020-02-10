@@ -10,19 +10,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSInteger, SimRuntimeState) {
-    SimRuntimeStateCreating,
-    SimRuntimeStateShutdown,
-    SimRuntimeStateBooting,
-    SimRuntimeStateBooted,
-    SimRuntimeStateShuttingDown
+typedef NS_ENUM(NSInteger, SimDeviceState) {
+    SimDeviceStateCreating,
+    SimDeviceStateShutdown,
+    SimDeviceStateBooting,
+    SimDeviceStateBooted,
+    SimDeviceStateShuttingDown
 };
 
 @interface SimDevice : NSObject
 @property (nonatomic, copy) NSUUID *UDID;
 @property (nonatomic, readonly) NSString *name;
 @property (nonatomic, readonly) SimRuntime *runtime;
-@property (nonatomic, readonly) SimRuntimeState state;
+@property (nonatomic, readonly) SimDeviceState state;
 
 - (BOOL)sendPushNotificationForBundleID:(NSString *)bundleID jsonPayload:(NSDictionary *)json error:(NSError **)error;
 
