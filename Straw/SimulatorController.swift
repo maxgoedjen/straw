@@ -2,18 +2,23 @@ import Foundation
 
 class SimulatorController: ObservableObject {
 
-    var availableSimulators: [Simulator] {
-        do {
-            let devPath = try runCommand(binary: URL(fileURLWithPath: "/usr/bin/xcode-select"), arguments: ["-p"])
-            let context = SimServiceContext.sharedServiceContext(forDeveloperDir: devPath, error: nil)
-            let devices = context.defaultDeviceSetWithError(nil).devices
-            return devices
-                .filter { $0.state == .booted }
-                .map { Simulator(simDevice: $0) }
-        } catch {
-            return [Self.invalidSimulator]
+    fileprivate let deviceSet: SimDeviceSet = {
+        let devPath = try! SimulatorController.runCommand(binary: URL(fileURLWithPath: "/usr/bin/xcode-select"), arguments: ["-p"])
+        return SimServiceContext.sharedServiceContext(forDeveloperDir: devPath, error: nil).defaultDeviceSetWithError(nil)
+    }()
+
+    init() {
+        deviceSet.registerNotificationHandler { userInfo in
+            self.objectWillChange.send()
         }
     }
+
+    var availableSimulators: [Simulator] {
+        guard !deviceSet.devices.isEmpty else { return [SimulatorController.invalidSimulator] }
+        return deviceSet.devices
+            .filter { $0.state == .booted }
+            .map { Simulator(simDevice: $0) }
+        }
 
     static var invalidSimulator: Simulator {
         Simulator(id: UUID(), name: "No Simulators Running", os: "0.0.0")
@@ -27,7 +32,7 @@ class SimulatorController: ObservableObject {
 
 extension SimulatorController {
 
-    fileprivate func runCommand(binary: URL, arguments: [String]) throws -> String {
+    fileprivate static func runCommand(binary: URL, arguments: [String]) throws -> String {
         let task = Process()
         task.executableURL = binary
         task.arguments = arguments

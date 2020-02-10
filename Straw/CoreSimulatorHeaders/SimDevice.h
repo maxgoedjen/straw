@@ -24,7 +24,6 @@ typedef NS_ENUM(NSInteger, SimRuntimeState) {
 @property (nonatomic, readonly) SimRuntime *runtime;
 @property (nonatomic, readonly) SimRuntimeState state;
 
-- (unsigned long long)registerNotificationHandlerOnQueue:(dispatch_queue_t)queue handler:(id)arg2;
 - (BOOL)sendPushNotificationForBundleID:(NSString *)bundleID jsonPayload:(NSDictionary *)json error:(NSError **)error;
 
 @end

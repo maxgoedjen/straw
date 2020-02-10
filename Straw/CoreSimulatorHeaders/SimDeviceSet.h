@@ -14,8 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, readonly) NSArray <SimDevice *>*devices;
 
-- (unsigned long long)registerNotificationHandler:(id)arg1;
-- (BOOL)subscribeToNotificationsWithError:(NSError **)error;
+- (unsigned long long)registerNotificationHandler:(void (^_Nonnull)(NSDictionary *))handler;
 
 @end
 
