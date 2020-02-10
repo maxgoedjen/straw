@@ -14,6 +14,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     var window: NSWindow!
     let pushController = PushController()
+    let simulatorController = SimulatorController()
     var contentView = ContentView()
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
@@ -29,6 +30,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
         NSApplication.shared.registerForRemoteNotifications()
+        print(simulatorController.availableSimulators)
     }
 
     func application(_ application: NSApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
