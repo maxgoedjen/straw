@@ -4,7 +4,7 @@ class SimulatorController: ObservableObject {
 
     var availableSimulators: [Simulator] {
         do {
-            let output = try runSimCtlCommand(command: "list")
+            let output = try runSimCtlCommand(arguments: ["list"])
             let split = output.split(separator: "\n")
             let booted = split.filter { $0.contains("Booted") }
             let cleaned = booted.map {
@@ -29,27 +29,30 @@ class SimulatorController: ObservableObject {
     }
 
     func sendAPNS(at url: URL, to simulator: Simulator) throws {
-        _ = try runSimCtlCommand(splitCommand: ["push", simulator.id.uuidString, Bundle.main.bundleIdentifier!, url.path])
+        _ = try runSimCtlCommand(arguments: ["push", simulator.id.uuidString, Bundle.main.bundleIdentifier!, url.path])
     }
 
 }
 
 extension SimulatorController {
 
-    fileprivate func runSimCtlCommand(command: String) throws -> String {
-        return try runSimCtlCommand(splitCommand: command.split(separator: " ").map { String($0) })
+    fileprivate func runSimCtlCommand(arguments: [String]) throws -> String {
+        let devURL = URL(string: try runCommand(binary: URL(fileURLWithPath: "/usr/bin/xcode-select"), arguments: ["-p"]))
+        guard let simCTLURL = devURL?.appendingPathComponent("/usr/bin/simctl") else { throw Error.simCtlCommandFailed }
+        return try runCommand(binary: simCTLURL, arguments: arguments)
     }
 
-    fileprivate func runSimCtlCommand(splitCommand: [String]) throws -> String {
+    fileprivate func runCommand(binary: URL, arguments: [String]) throws -> String {
         let task = Process()
-        task.executableURL = URL(fileURLWithPath: "/Applications/Xcode.app/Contents/Developer/usr/bin/simctl")
-        task.arguments = splitCommand
+        task.executableURL = binary
+        task.arguments = arguments
         let output = Pipe()
         task.standardOutput = output
         task.standardError = nil
         try task.run()
         let outputData = output.fileHandleForReading.readDataToEndOfFile()
         return String(data: outputData, encoding: .utf8) ?? ""
+
     }
 
 }
