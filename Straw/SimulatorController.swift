@@ -14,11 +14,12 @@ class SimulatorController: ObservableObject {
     }
 
     var availableSimulators: [Simulator] {
-        guard !deviceSet.devices.isEmpty else { return [SimulatorController.invalidSimulator] }
-        return deviceSet.devices
+        let mapped = deviceSet.devices
             .filter { $0.state == .booted }
             .map { Simulator(simDevice: $0) }
-        }
+        guard !mapped.isEmpty else { return [SimulatorController.invalidSimulator] }
+        return mapped
+    }
 
     static var invalidSimulator: Simulator {
         Simulator(id: UUID(), name: "No Simulators Running", os: "0.0.0")
