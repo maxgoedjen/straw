@@ -10,23 +10,22 @@ import SwiftUI
 
 struct ContentView: View {
 
-    @ObservedObject var simulatorController: SimulatorController
-    @State var selectedSimulator: Simulator?
+    @ObservedObject var state: StateHolder
+    var simulatorController: SimulatorController
 
     var body: some View {
         Form {
-            Picker(selection: $selectedSimulator, label: Text("Target Simulator")) {
+            Picker(selection: $state.targetSimulator, label: Text("Target Simulator")) {
                 ForEach(simulatorController.availableSimulators) { simulator in
-                    Text("\(simulator.name)")
+                    Text("\(simulator.name)").tag(simulator)
                 }
             }
+            TextField("Push Token", text: $state.pushToken).deleteDisabled(true)
+            TextField("Last Notification Payload", text: $state.lastNotification).disabled(true)
         }
+        .padding()
+        .frame(idealWidth: 480, idealHeight: 300)
     }
+
 }
 
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView(simulatorController: SimulatorController())
-    }
-}

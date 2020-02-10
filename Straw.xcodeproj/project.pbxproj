@@ -15,6 +15,7 @@
 		50FAE12A23F0DA58009310FD /* StrawTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FAE12923F0DA58009310FD /* StrawTests.swift */; };
 		50FAE15623F0E281009310FD /* PushController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FAE15523F0E281009310FD /* PushController.swift */; };
 		50FAE15823F0E85F009310FD /* SimulatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FAE15723F0E85F009310FD /* SimulatorController.swift */; };
+		50FAE19923F10408009310FD /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FAE19823F10408009310FD /* State.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +42,7 @@
 		50FAE12B23F0DA58009310FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		50FAE15523F0E281009310FD /* PushController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushController.swift; sourceTree = "<group>"; };
 		50FAE15723F0E85F009310FD /* SimulatorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatorController.swift; sourceTree = "<group>"; };
+		50FAE19823F10408009310FD /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 				50FAE11523F0DA54009310FD /* ContentView.swift */,
 				50FAE15723F0E85F009310FD /* SimulatorController.swift */,
 				50FAE15523F0E281009310FD /* PushController.swift */,
+				50FAE19823F10408009310FD /* State.swift */,
 				50FAE11723F0DA57009310FD /* Assets.xcassets */,
 				50FAE11C23F0DA57009310FD /* Main.storyboard */,
 				50FAE11F23F0DA58009310FD /* Info.plist */,
@@ -216,6 +219,7 @@
 				50FAE15823F0E85F009310FD /* SimulatorController.swift in Sources */,
 				50FAE11623F0DA54009310FD /* ContentView.swift in Sources */,
 				50FAE15623F0E281009310FD /* PushController.swift in Sources */,
+				50FAE19923F10408009310FD /* State.swift in Sources */,
 				50FAE11423F0DA54009310FD /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

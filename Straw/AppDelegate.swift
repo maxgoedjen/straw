@@ -15,8 +15,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var window: NSWindow!
     let pushController = PushController()
     let simulatorController = SimulatorController()
+    lazy var state: StateHolder = { StateHolder(targetSimulator: simulatorController.availableSimulators.first!) }()
     lazy var contentView: ContentView = {
-        ContentView(simulatorController: simulatorController)
+        ContentView(state: state, simulatorController: simulatorController)
     }()
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
@@ -28,27 +29,46 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.setFrameAutosaveName("Main Window")
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
+        assertChangedBundleID()
         NSApplication.shared.registerForRemoteNotifications()
     }
 
     func application(_ application: NSApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let hex = deviceToken.map { String(format: "%02X", $0) }.joined()
-        print("Registered with token: \(hex)")
+        state.pushToken = hex
+        registerWithYourService(deviceToken: deviceToken)
     }
 
     func application(_ application: NSApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        print("Failed to register with error \(error)")
+        assertionFailure("Failed to register with error \(error)")
     }
 
     func application(_ application: NSApplication, didReceiveRemoteNotification userInfo: [String : Any]) {
-        print("Received \(userInfo)")
         do {
             let url = try pushController.writeToDisk(userInfo: userInfo)
-            guard let selected = contentView.selectedSimulator else { return }
-            try simulatorController.sendAPNS(at: url, to: selected)
+            state.lastNotification = try pushController.jsonFormatted(from: userInfo)
+            try simulatorController.sendAPNS(at: url, to: state.targetSimulator)
         } catch {
             print("Error: \(error)")
         }
+    }
+
+}
+
+extension AppDelegate {
+
+    func registerWithYourService(deviceToken: Data) {
+        // Perform whatever action your normal app does when it gets a push token back.
+        // Probably register it with your backend.
+//        assertionFailure("You need to change this ^.")
+    }
+
+}
+
+extension AppDelegate {
+
+    func assertChangedBundleID() {
+//        assert(Bundle.main.bundleIdentifier != "com.maxgoedjen.straw", "You need to change the bundle ID of the app to match your iOS App.")
     }
 
 }

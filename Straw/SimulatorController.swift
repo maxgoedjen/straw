@@ -15,12 +15,16 @@ class SimulatorController: ObservableObject {
             }
             return cleaned.compactMap { Simulator(simCtlString: $0) }
         } catch {
-            return []
+            return [Self.invalidSimulator]
         }
     }
 
+    static var invalidSimulator: Simulator {
+        Simulator(simCtlString: "Invalid: None (4002B53D-365B-42F0-8C0E-AAC9D6BC2DBF)")!
+    }
+
     func sendAPNS(at url: URL, to simulator: Simulator) throws {
-        _ = try runSimCtlCommand(splitCommand: ["push", simulator.id, Bundle.main.bundleIdentifier!, url.path])
+        _ = try runSimCtlCommand(splitCommand: ["push", simulator.id.uuidString, Bundle.main.bundleIdentifier!, url.path])
     }
 
 }
@@ -37,6 +41,7 @@ extension SimulatorController {
         task.arguments = splitCommand
         let output = Pipe()
         task.standardOutput = output
+        task.standardError = nil
         try task.run()
         let outputData = output.fileHandleForReading.readDataToEndOfFile()
         return String(data: outputData, encoding: .utf8) ?? ""
@@ -47,14 +52,15 @@ extension SimulatorController {
 struct Simulator: Identifiable, Hashable {
 
     var name: String
-    var id: String
+    var id: UUID
 
     fileprivate init?(simCtlString: String) {
         // Simulators (at least as of Xcode 11.4) in the simctl output will have this format:
         // DeviceType: Device Name (UUID)
         guard let idRange = simCtlString.range(of: "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}", options: .regularExpression) else { return nil }
         guard let nameStart = simCtlString.range(of: ": ") else { return nil }
-        id = String(simCtlString[idRange])
+        guard let id = UUID(uuidString: String(simCtlString[idRange])) else { return nil }
+        self.id = id
         name = String(simCtlString[nameStart.upperBound...(simCtlString.index(idRange.lowerBound, offsetBy: -3))])
     }
 
