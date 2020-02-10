@@ -15,12 +15,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var window: NSWindow!
     let pushController = PushController()
     let simulatorController = SimulatorController()
-    var contentView = ContentView()
+    lazy var contentView: ContentView = {
+        ContentView(simulatorController: simulatorController)
+    }()
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Create the SwiftUI view that provides the window contents.
-
-        // Create the window and set the content view. 
         window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
@@ -30,7 +29,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
         NSApplication.shared.registerForRemoteNotifications()
-        print(simulatorController.availableSimulators)
     }
 
     func application(_ application: NSApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
@@ -44,9 +42,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func application(_ application: NSApplication, didReceiveRemoteNotification userInfo: [String : Any]) {
         print("Received \(userInfo)")
-        contentView.text = "\(userInfo)"
         do {
-            try pushController.received(userInfo: userInfo)
+            let url = try pushController.writeToDisk(userInfo: userInfo)
+            guard let selected = contentView.selectedSimulator else { return }
+            try simulatorController.sendAPNS(at: url, to: selected)
         } catch {
             print("Error: \(error)")
         }

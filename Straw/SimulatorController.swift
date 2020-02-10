@@ -1,6 +1,6 @@
 import Foundation
 
-class SimulatorController {
+class SimulatorController: ObservableObject {
 
     var availableSimulators: [Simulator] {
         do {
@@ -44,7 +44,7 @@ extension SimulatorController {
 
 }
 
-struct Simulator: Identifiable {
+struct Simulator: Identifiable, Hashable {
 
     var name: String
     var id: String

@@ -10,15 +10,15 @@ import SwiftUI
 
 struct ContentView: View {
 
-    @State var text: String? = nil
+    @ObservedObject var simulatorController: SimulatorController
+    @State var selectedSimulator: Simulator?
 
     var body: some View {
-        Group {
-            if text == nil {
-                Text("Waiting for notifications...")
-            } else {
-                Text("Piped \"\(text!)\"")
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+        Form {
+            Picker(selection: $selectedSimulator, label: Text("Target Simulator")) {
+                ForEach(simulatorController.availableSimulators) { simulator in
+                    Text("\(simulator.name)")
+                }
             }
         }
     }
@@ -27,6 +27,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(simulatorController: SimulatorController())
     }
 }
