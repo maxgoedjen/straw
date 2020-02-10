@@ -3,8 +3,14 @@ import Foundation
 class SimulatorController: ObservableObject {
 
     fileprivate let deviceSet: SimDeviceSet = {
-        let devPath = try! SimulatorController.runCommand(binary: URL(fileURLWithPath: "/usr/bin/xcode-select"), arguments: ["-p"])
-        return SimServiceContext.sharedServiceContext(forDeveloperDir: devPath, error: nil).defaultDeviceSetWithError(nil)
+        do {
+            let devPath = try SimulatorController.runCommand(binary: URL(fileURLWithPath: "/usr/bin/xcode-select"), arguments: ["-p"])
+            return SimServiceContext.sharedServiceContext(forDeveloperDir: devPath, error: nil).defaultDeviceSetWithError(nil)
+        } catch let error as Error {
+            fatalError(error.description)
+        } catch {
+            fatalError()
+        }
     }()
 
     init() {
@@ -75,8 +81,15 @@ struct Simulator: Identifiable, Hashable, CustomStringConvertible {
 
 extension SimulatorController {
 
-    enum Error: Swift.Error {
-        case simCtlCommandFailed
+    enum Error: Swift.Error, CustomStringConvertible {
+        case xcodePathNotSet
+
+        var description: String {
+            switch self {
+            case .xcodePathNotSet:
+                return "There is no active developer directory set. Please launch Xcode, open Preferences, open the \"Locations\" tab, and select a Command Line Tools version"
+            }
+        }
     }
 
 }
