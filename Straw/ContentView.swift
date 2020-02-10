@@ -20,7 +20,7 @@ struct ContentView: View {
                     Text("\(simulator.name)").tag(simulator)
                 }
             }
-            TextField("Push Token", text: $state.pushToken).deleteDisabled(true)
+            TextField("Push Token", text: $state.pushToken).disabled(true)
             TextField("Last Notification Payload", text: $state.lastNotification).disabled(true)
         }
         .padding()
