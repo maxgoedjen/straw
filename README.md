@@ -3,6 +3,8 @@ Piping macOS app notifications to the simulator
 
 ## Live iOS Notifications in the Simulator
 
+![.github/demo.gif](Demo)
+
 Tired of seeing this?
 
 ```Error Domain=NSCocoaErrorDomain Code=3010 "remote notifications are not supported in the simulator" UserInfo={NSLocalizedDescription=remote notifications are not supported in the simulator}```
