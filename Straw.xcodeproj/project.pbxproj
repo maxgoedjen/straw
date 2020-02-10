@@ -58,7 +58,6 @@
 		50FAE15723F0E85F009310FD /* SimulatorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatorController.swift; sourceTree = "<group>"; };
 		50FAE19823F10408009310FD /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 		50FAE19A23F13FE2009310FD /* Straw-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Straw-Bridging-Header.h"; sourceTree = "<group>"; };
-		50FAE19F23F142FD009310FD /* CoreSimulator.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreSimulator.framework; path = ../../../../../../Library/Developer/PrivateFrameworks/CoreSimulator.framework; sourceTree = "<group>"; };
 		50FAE1A323F1432E009310FD /* CoreSimulator */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = CoreSimulator; path = ../../../../../../Library/Developer/PrivateFrameworks/CoreSimulator.framework/Versions/A/CoreSimulator; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -138,7 +137,6 @@
 			isa = PBXGroup;
 			children = (
 				50FAE1A323F1432E009310FD /* CoreSimulator */,
-				50FAE19F23F142FD009310FD /* CoreSimulator.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
