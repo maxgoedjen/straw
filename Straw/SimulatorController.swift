@@ -13,7 +13,12 @@ class SimulatorController: ObservableObject {
                     .trimmingCharacters(in: .whitespaces)
 
             }
-            return cleaned.compactMap { Simulator(simCtlString: $0) }
+            let mapped = cleaned.compactMap { Simulator(simCtlString: $0) }
+            if mapped.isEmpty {
+                return [Self.invalidSimulator]
+            } else {
+                return mapped
+            }
         } catch {
             return [Self.invalidSimulator]
         }
