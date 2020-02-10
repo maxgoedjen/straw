@@ -3,7 +3,7 @@ Piping macOS app notifications to the simulator
 
 ## Live iOS Notifications in the Simulator
 
-![.github/demo.gif](Demo)
+![demo](demo.gif)
 
 Tired of seeing this?
 
