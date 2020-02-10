@@ -9,9 +9,18 @@
 import SwiftUI
 
 struct ContentView: View {
+
+    @State var text: String? = nil
+
     var body: some View {
-        Text("Hello, World!")
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        Group {
+            if text == nil {
+                Text("Waiting for notifications...")
+            } else {
+                Text("Piped \"\(text!)\"")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+        }
     }
 }
 
