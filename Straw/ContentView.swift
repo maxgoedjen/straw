@@ -17,7 +17,7 @@ struct ContentView: View {
         Form {
             Picker(selection: $state.targetSimulator, label: Text("Target Simulator")) {
                 ForEach(simulatorController.availableSimulators) { simulator in
-                    Text("\(simulator.name)").tag(simulator)
+                    Text(simulator.name).tag(simulator)
                 }
             }
             TextField("Push Token", text: $state.pushToken).disabled(true)

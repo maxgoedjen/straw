@@ -13,7 +13,6 @@ import SwiftUI
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     var window: NSWindow!
-    let pushController = PushController()
     let simulatorController = SimulatorController()
     lazy var state: StateHolder = { StateHolder(targetSimulator: simulatorController.availableSimulators.first!) }()
     lazy var contentView: ContentView = {
@@ -45,9 +44,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func application(_ application: NSApplication, didReceiveRemoteNotification userInfo: [String : Any]) {
         do {
-            let url = try pushController.writeToDisk(userInfo: userInfo)
-            state.lastNotification = try pushController.jsonFormatted(from: userInfo)
-            try simulatorController.sendAPNS(at: url, to: state.targetSimulator)
+            let jsonData = try JSONSerialization.data(withJSONObject: userInfo, options: [])
+            let payload = String(data: jsonData, encoding: .utf8) ?? ""
+            state.lastNotification = payload
+            try simulatorController.sendAPNS(payload: userInfo, to: state.targetSimulator)
         } catch {
             print("Error: \(error)")
         }
