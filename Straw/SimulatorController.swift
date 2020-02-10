@@ -25,7 +25,7 @@ class SimulatorController: ObservableObject {
     }
 
     static var invalidSimulator: Simulator {
-        Simulator(simCtlString: "Invalid: None (4002B53D-365B-42F0-8C0E-AAC9D6BC2DBF)")!
+        Simulator(name: "No Simulators Running", id: UUID())
     }
 
     func sendAPNS(at url: URL, to simulator: Simulator) throws {
@@ -61,6 +61,11 @@ struct Simulator: Identifiable, Hashable {
 
     var name: String
     var id: UUID
+
+    fileprivate init(name: String, id: UUID) {
+        self.name = name
+        self.id = id
+    }
 
     fileprivate init?(simCtlString: String) {
         // Simulators (at least as of Xcode 11.4) in the simctl output will have this format:
