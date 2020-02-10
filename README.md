@@ -1,13 +1,9 @@
-# straw-push
+# Straw
 Piping macOS app notifications to the simulator
 
 ## Live iOS Notifications in the Simulator
 
 ![demo](demo.gif)
-
-Tired of seeing this?
-
-```Error Domain=NSCocoaErrorDomain Code=3010 "remote notifications are not supported in the simulator" UserInfo={NSLocalizedDescription=remote notifications are not supported in the simulator}```
 
 Starting with Xcode 11.4, Xcode allows simulators to open `.apns` files representing push payloads. Unfortunately, the Simulator itself is still incapable of registering directly with APNS. This project is a bridge app that allows a Mac app to register on your iPhone Simulator's behalf, and relays the push notifications it receives.
 
