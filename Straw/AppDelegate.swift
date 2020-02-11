@@ -12,7 +12,10 @@ import SwiftUI
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    var window: NSWindow!
+    let popover = NSPopover()
+    let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+    @IBOutlet var menu: NSMenu!
+
     let simulatorController = SimulatorController()
     lazy var state: StateHolder = { StateHolder(targetSimulator: simulatorController.availableSimulators.first!) }()
     lazy var contentView: ContentView = {
@@ -20,14 +23,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }()
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered, defer: false)
-        window.center()
-        window.setFrameAutosaveName("Main Window")
-        window.contentView = NSHostingView(rootView: contentView)
-        window.makeKeyAndOrderFront(nil)
+        statusItem.button?.image = NSImage(named: "MenuBarIcon")
+        statusItem.button?.action = #selector(handleMenuItemClick(sender:))
+        statusItem.button?.sendAction(on: [.leftMouseUp])
+        popover.behavior = .transient
+        popover.contentViewController = NSHostingController(rootView: contentView)
         assertChangedBundleID()
         NSApplication.shared.registerForRemoteNotifications()
     }
@@ -50,6 +50,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             try simulatorController.sendAPNS(payload: userInfo, to: state.targetSimulator)
         } catch {
             print("Error: \(error)")
+        }
+    }
+
+}
+
+extension AppDelegate {
+
+    @objc func handleMenuItemClick(sender: NSStatusBarButton) {
+        guard let event = NSApp.currentEvent else { return }
+        switch event.type {
+        case .leftMouseUp:
+            popover.show(relativeTo: sender.bounds, of: sender, preferredEdge: .minY)
+        default:
+            break
         }
     }
 
