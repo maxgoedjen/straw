@@ -16,7 +16,6 @@
 		50FAE15823F0E85F009310FD /* SimulatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FAE15723F0E85F009310FD /* SimulatorController.swift */; };
 		50FAE19923F10408009310FD /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FAE19823F10408009310FD /* State.swift */; };
 		50FAE1A423F1432E009310FD /* CoreSimulator in Frameworks */ = {isa = PBXBuildFile; fileRef = 50FAE1A323F1432E009310FD /* CoreSimulator */; };
-		50FAE1A523F1432E009310FD /* CoreSimulator in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 50FAE1A323F1432E009310FD /* CoreSimulator */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,20 +27,6 @@
 			remoteInfo = Straw;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		50FAE1A623F1432E009310FD /* Embed Libraries */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				50FAE1A523F1432E009310FD /* CoreSimulator in Embed Libraries */,
-			);
-			name = "Embed Libraries";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		50FAE11023F0DA54009310FD /* Straw.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Straw.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -151,7 +136,6 @@
 				50FAE10C23F0DA54009310FD /* Sources */,
 				50FAE10D23F0DA54009310FD /* Frameworks */,
 				50FAE10E23F0DA54009310FD /* Resources */,
-				50FAE1A623F1432E009310FD /* Embed Libraries */,
 			);
 			buildRules = (
 			);
